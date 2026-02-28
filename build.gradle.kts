@@ -23,6 +23,7 @@ repositories {
 dependencies {
     compileOnly(libs.kotlin)
     compileOnly(libs.paper)
+    implementation(kotlin("stdlib"))
 }
 
 kotlin {
@@ -84,3 +85,4 @@ tasks.shadowJar {
         }
     }
 }
+
