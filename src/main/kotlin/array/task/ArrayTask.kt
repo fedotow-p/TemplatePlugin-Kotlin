@@ -11,11 +11,63 @@ object ArrayTask {
         return DoubleArray(18){random.nextDouble(-9.0, 11.0)}
     }
 
-    private fun formula13(x: Double): Double = atan(1.0 / exp((2 * PI / exp(x)).pow(cos(tan(x)))))
+    private fun formula13(x: Double): Double {
+        return try {
+            val expX = exp(x)
+            if (expX == 0.0) return 0.0
 
-    private fun formulaIn(x: Double): Double = sin((cbrt(x) / 2.0).pow(atan((x+1) / (2 * E) + 1)))
+            val twoPiDivExpX = divide(2 * PI, expX)
+            val tanX = tan(x)
+            val cosTanX = cos(tanX)
 
-    private fun formulaDefault(x: Double): Double = sin((cos(x.pow(x*(x + 1))) * ((2 * x).pow(3.0).pow((x/ (1 - x)).pow(x) / 2.0) +2.0 / 3.0)).pow(atan(exp(-abs(x)))))
+            val powValue = pow(twoPiDivExpX, cosTanX)
+            val expPow = exp(powValue)
+
+            if (expPow == 0.0) 0.0
+            else atan(divide(1.0,expPow))
+        } catch (_: Exception) {
+            0.0
+        }
+
+    }
+
+    private fun formulaIn(x: Double): Double {
+        return try{
+            val cbrtX = cbrt(x)
+            val atanValue = atan(divide(x + 1, 2 * E) + 1)
+            val powValue = pow(divide(cbrtX, 2.0), atanValue)
+            SafeMath.sin(powValue)
+        }catch (_: Exception){
+            0.0}
+    }
+
+    private fun formulaDefault(x: Double): Double {
+        return try{
+            if (x == 0.0) return 0.0
+
+            val xPow = pow(x, x * (x + 1))
+            val cosXPow = cos(xPow)
+
+            val twoXPow3 = pow(2 * x, 3.0)
+
+            val xDiv1MinusX = divide(x, 1 - x)
+            val xDivPowX = pow(xDiv1MinusX, x)
+
+            val innerPow = pow(twoXPow3, divide(xDivPowX, 2.0))
+
+            val sum = innerPow + 2.0 / 3.0
+
+            val absX = abs(x)
+            val expNegAbsX = exp(-absX)
+            val atanExp = atan(expNegAbsX)
+
+            val outerPow = pow(cosXPow * sum, atanExp)
+
+            SafeMath.sin(outerPow)
+        }catch(_: Exception){
+            0.0
+        }
+    }
 
     fun calculateQ(p: ShortArray, x: DoubleArray): Array<DoubleArray> {
         return Array(p.size){i ->

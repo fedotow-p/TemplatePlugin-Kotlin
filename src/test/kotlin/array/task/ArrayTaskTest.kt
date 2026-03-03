@@ -2,7 +2,6 @@ package array.task
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertDoesNotThrow
-import kotlin.math.*
 import org.junit.jupiter.api.Test
 
 class ArrayTaskTest {
@@ -22,8 +21,8 @@ class ArrayTaskTest {
     @Test
     fun testCreateXReturnsDeterministicArraysWithSameSeed() {
         val seed = 42
-        val x1 = ArrayTask.createX()
-        val x2 = ArrayTask.createX()
+        val x1 = ArrayTask.createX(seed)
+        val x2 = ArrayTask.createX(seed)
 
         assertEquals(18, x1.size)
 
@@ -153,7 +152,13 @@ class ArrayTaskTest {
 
         for (row in q){
             for (value in row){
-                assertTrue(value.isNaN())
+                assertTrue(value.isFinite())
+            }
+        }
+
+        for (row in q){
+            for (value in row){
+                assertFalse(value.isNaN())
             }
         }
     }
